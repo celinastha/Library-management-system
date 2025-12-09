@@ -8,7 +8,7 @@ Clone the repository:
   - cd backend and npm install
   - cd frontend and npm install
 
-  ## 2. Compile and run
+## 2. Compile and run
 Backend (Node.js/Express)
 - cd backend
 - npm install (if not already)
