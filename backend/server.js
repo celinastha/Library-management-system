@@ -2,8 +2,8 @@ const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const db= require('./utils/db.js');
-const librarianRoutes = require('./routes/librarianRoutes.js');
-const borrowerRoutes = require('./routes/borrowerRoutes.js');
+// const librarianRoutes = require('./routes/librarianRoutes.js');
+// const borrowerRoutes = require('./routes/borrowerRoutes.js');
 
 
 dotenv.config();
@@ -13,8 +13,8 @@ app.use(cors());
 
 const PORT = process.env.PORT || 3000;
 
-app.use('/routes/librarian', librarianRoutes);
-app.use('/routes/borrower', borrowerRoutes);
+// app.use('/routes/librarian', librarianRoutes);
+// app.use('/routes/borrower', borrowerRoutes);
 
 // Simple route
 app.get('/', (req, res) => {
