@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import { Link } from 'react-router-dom';
 import "./App.css";
 
 function App() {
@@ -38,7 +38,6 @@ function App() {
       setSortDirection("asc");
     }
   };
-
   const getSortedBooks = () => {
     if (!sortColumn) return books;
     const sorted = [...books].sort((a, b) => {
@@ -122,31 +121,36 @@ function App() {
                 <tbody>
                   {sortedBooks.map((book) => (
                     <tr key={book.ISBN}>
-                      <td
-                        style={{
-                          borderRight: "2px solid #ccc",
-                          padding: "8px",
-                        }}
+                      <Link 
+                        to={`/book/${book.ISBN}`} 
+                        state={{ data: {Title:book.Title, Authors:book.Authors, Status:book.Status} }}
                       >
-                        {book.ISBN}
-                      </td>
-                      <td
-                        style={{
-                          borderRight: "2px solid #ccc",
-                          padding: "8px",
-                        }}
-                      >
-                        {book.Title}
-                      </td>
-                      <td
-                        style={{
-                          borderRight: "2px solid #ccc",
-                          padding: "8px",
-                        }}
-                      >
-                        {book.Authors}
-                      </td>
-                      <td style={{ padding: "8px" }}>{book.Status}</td>
+                        <td
+                          style={{
+                            borderRight: "2px solid #ccc",
+                            padding: "8px",
+                          }}
+                        >
+                          {book.ISBN}
+                        </td>
+                        <td
+                          style={{
+                            borderRight: "2px solid #ccc",
+                            padding: "8px",
+                          }}
+                        >
+                          {book.Title}
+                        </td>
+                        <td
+                          style={{
+                            borderRight: "2px solid #ccc",
+                            padding: "8px",
+                          }}
+                        >
+                          {book.Authors}
+                        </td>
+                        <td style={{ padding: "8px" }}>{book.Status}</td>
+                      </link>
                     </tr>
                   ))}
                 </tbody>
