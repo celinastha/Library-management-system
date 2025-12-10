@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { FaSearch } from "react-icons/fa";
 
 import "./App.css";
 
@@ -8,10 +7,14 @@ function App() {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [sortColumn, setSortColumn] = useState(null);
+  const [sortDirection, setSortDirection] = useState("asc");
+
   const searchBooks = async (event) => {
     event.preventDefault();
     try {
       setError("");
+      setLoading(true);
       const response = await fetch(`http://localhost:3000/search?q=${search}`);
 
       if (!response.ok) {
@@ -19,14 +22,49 @@ function App() {
       }
 
       const data = await response.json();
-      console.log(data);
       setBooks(data);
     } catch (err) {
-      console.error("Search failed:", err);
       setError("Failed to fetch books. Is the backend running?");
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleSort = (column) => {
+    if (sortColumn === column) {
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+    } else {
+      setSortColumn(column);
+      setSortDirection("asc");
+    }
+  };
+
+  const getSortedBooks = () => {
+    if (!sortColumn) return books;
+    const sorted = [...books].sort((a, b) => {
+      let aValue = a[sortColumn];
+      let bValue = b[sortColumn];
+      if (aValue == null) aValue = "";
+      if (bValue == null) bValue = "";
+      if (!isNaN(aValue) && !isNaN(bValue)) {
+        aValue = Number(aValue);
+        bValue = Number(bValue);
+      } else {
+        aValue = aValue.toString().toLowerCase();
+        bValue = bValue.toString().toLowerCase();
+      }
+      if (aValue < bValue) return sortDirection === "asc" ? -1 : 1;
+      if (aValue > bValue) return sortDirection === "asc" ? 1 : -1;
+      return 0;
+    });
+    return sorted;
+  };
+
+  const sortedBooks = getSortedBooks();
+
+  const sortArrow = (column) => {
+    if (sortColumn !== column) return "";
+    return sortDirection === "asc" ? " ▲" : " ▼";
   };
 
   return (
@@ -51,22 +89,22 @@ function App() {
             <table style={{ width: "100%", borderCollapse: "collapse" }}>
               <thead>
                 <tr>
-                  <th style={{ padding: "8px" }}>
-                    ISBN
+                  <th style={{ padding: "8px", cursor: "pointer" }} onClick={() => handleSort("ISBN")}>
+                    ISBN{sortArrow("ISBN")}
                   </th>
-                  <th style={{ padding: "8px" }}>
-                    Title
+                  <th style={{ padding: "8px", cursor: "pointer" }} onClick={() => handleSort("Title")}>
+                    Title{sortArrow("Title")}
                   </th>
-                  <th style={{ padding: "8px" }}>
-                    Authors
+                  <th style={{ padding: "8px", cursor: "pointer" }} onClick={() => handleSort("Authors")}>
+                    Authors{sortArrow("Authors")}
                   </th>
-                  <th style={{ padding: "8px" }}>
-                    Status
+                  <th style={{ padding: "8px", cursor: "pointer" }} onClick={() => handleSort("Status")}>
+                    Status{sortArrow("Status")}
                   </th>
                 </tr>
               </thead>
               <tbody>
-                {books.map((book) => (
+                {sortedBooks.map((book) => (
                   <tr key={book.ISBN}>
                     <td style={{ borderRight: "2px solid #ccc", padding: "8px" }}>
                       {book.ISBN}
