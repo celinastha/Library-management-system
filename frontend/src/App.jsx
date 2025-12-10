@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import "./App.css";
 
 function App() {
@@ -121,36 +121,62 @@ function App() {
                 <tbody>
                   {sortedBooks.map((book) => (
                     <tr key={book.ISBN}>
-                      <Link 
-                        to={`/book/${book.ISBN}`} 
-                        state={{ data: {Title:book.Title, Authors:book.Authors, Status:book.Status} }}
+                      <td
+                        style={{
+                          borderRight: "2px solid #ccc",
+                          padding: "8px",
+                        }}
                       >
-                        <td
-                          style={{
-                            borderRight: "2px solid #ccc",
-                            padding: "8px",
+                        <Link
+                          to={`/book/${book.ISBN}`}
+                          state={{
+                            data: {
+                              Title: book.Title,
+                              Authors: book.Authors,
+                              Status: book.Status,
+                            },
                           }}
+                          style={{ textDecoration: "none", color: "inherit" }}
                         >
                           {book.ISBN}
-                        </td>
-                        <td
-                          style={{
-                            borderRight: "2px solid #ccc",
-                            padding: "8px",
+                        </Link>
+                      </td>
+                      <td
+                        style={{
+                          borderRight: "2px solid #ccc",
+                          padding: "8px",
+                        }}
+                      >
+                        <Link
+                          to={`/book/${book.ISBN}`}
+                          state={{
+                            data: {
+                              Title: book.Title,
+                              Authors: book.Authors,
+                              Status: book.Status,
+                            },
                           }}
+                          style={{ textDecoration: "none", color: "inherit" }}
                         >
                           {book.Title}
-                        </td>
-                        <td
-                          style={{
-                            borderRight: "2px solid #ccc",
-                            padding: "8px",
-                          }}
-                        >
-                          {book.Authors}
-                        </td>
-                        <td style={{ padding: "8px" }}>{book.Status}</td>
-                      </Link>
+                        </Link>
+                      </td>
+                      <td
+                        style={{
+                          borderRight: "2px solid #ccc",
+                          padding: "8px",
+                        }}
+                      >
+                        {book.Authors}
+                      </td>
+                      <td
+                        style={{
+                          borderRight: "2px solid #ccc",
+                          padding: "8px",
+                        }}
+                      >
+                        {book.Status}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
