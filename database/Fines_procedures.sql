@@ -80,4 +80,4 @@ DELIMITER ;
 -- Example calls
 CALL refresh_fines(); 
 CALL pay_fines('ID000994'); 
-CALL display_fines_for_borrower('ID000994', FALSE); 
+CALL display_fines('ID000994', FALSE); 
