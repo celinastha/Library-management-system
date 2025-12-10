@@ -1,5 +1,6 @@
 import React from 'react'
 import { useState } from "react";
+import { Link } from 'react-router-dom';
 import "./App.css";
 import Search from "./Components/Search/Search";
 import AuthPage from "./Pages/Auth/Auth";
