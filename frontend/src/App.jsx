@@ -68,64 +68,94 @@ function App() {
   };
 
   return (
-    <div className="homebox-1">
-      <div className="homebox-2">
-        <form onSubmit={searchBooks}>
-          <input
-            className="search-input-field"
-            placeholder="search ISBN, Tile, Authors, Status..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-          <button>search</button>
-          <text className="text-1">Group Osmium</text>
-        </form>
-        {error && <p>{error}</p>}
+    <>
+      <nav className="navbar">
+        <span className="navbar-title">Library Management System</span>
+      </nav>
+      <div className="homebox-1">
+        <div className="homebox-2">
+          <form onSubmit={searchBooks}>
+            <input
+              className="search-input-field"
+              placeholder="search ISBN, Tile, Authors, Status..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <button>search</button>
+            <text className="text-1">Group Osmium</text>
+          </form>
+          {error && <p>{error}</p>}
 
-        <div className="search-result-container">
-          {loading ? (
-            <p>loading...</p>
-          ) : (
-            <table style={{ width: "100%", borderCollapse: "collapse" }}>
-              <thead>
-                <tr>
-                  <th style={{ padding: "8px", cursor: "pointer" }} onClick={() => handleSort("ISBN")}>
-                    ISBN{sortArrow("ISBN")}
-                  </th>
-                  <th style={{ padding: "8px", cursor: "pointer" }} onClick={() => handleSort("Title")}>
-                    Title{sortArrow("Title")}
-                  </th>
-                  <th style={{ padding: "8px", cursor: "pointer" }} onClick={() => handleSort("Authors")}>
-                    Authors{sortArrow("Authors")}
-                  </th>
-                  <th style={{ padding: "8px", cursor: "pointer" }} onClick={() => handleSort("Status")}>
-                    Status{sortArrow("Status")}
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {sortedBooks.map((book) => (
-                  <tr key={book.ISBN}>
-                    <td style={{ borderRight: "2px solid #ccc", padding: "8px" }}>
-                      {book.ISBN}
-                    </td>
-                    <td style={{ borderRight: "2px solid #ccc", padding: "8px" }}>
-                      {book.Title}
-                    </td>
-                    <td style={{ borderRight: "2px solid #ccc", padding: "8px" }}>
-                      {book.Authors}
-                    </td>
-                    <td style={{ padding: "8px" }}>
-                      {book.Status}
-                    </td>
+          <div className="search-result-container">
+            {loading ? (
+              <p>loading...</p>
+            ) : (
+              <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                <thead>
+                  <tr>
+                    <th
+                      style={{ padding: "8px", cursor: "pointer" }}
+                      onClick={() => handleSort("ISBN")}
+                    >
+                      ISBN{sortArrow("ISBN")}
+                    </th>
+                    <th
+                      style={{ padding: "8px", cursor: "pointer" }}
+                      onClick={() => handleSort("Title")}
+                    >
+                      Title{sortArrow("Title")}
+                    </th>
+                    <th
+                      style={{ padding: "8px", cursor: "pointer" }}
+                      onClick={() => handleSort("Authors")}
+                    >
+                      Authors{sortArrow("Authors")}
+                    </th>
+                    <th
+                      style={{ padding: "8px", cursor: "pointer" }}
+                      onClick={() => handleSort("Status")}
+                    >
+                      Status{sortArrow("Status")}
+                    </th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
+                </thead>
+                <tbody>
+                  {sortedBooks.map((book) => (
+                    <tr key={book.ISBN}>
+                      <td
+                        style={{
+                          borderRight: "2px solid #ccc",
+                          padding: "8px",
+                        }}
+                      >
+                        {book.ISBN}
+                      </td>
+                      <td
+                        style={{
+                          borderRight: "2px solid #ccc",
+                          padding: "8px",
+                        }}
+                      >
+                        {book.Title}
+                      </td>
+                      <td
+                        style={{
+                          borderRight: "2px solid #ccc",
+                          padding: "8px",
+                        }}
+                      >
+                        {book.Authors}
+                      </td>
+                      <td style={{ padding: "8px" }}>{book.Status}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
