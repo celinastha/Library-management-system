@@ -9,12 +9,12 @@ Clone the repository:
   - cd frontend and npm install
 
 ## 2. Compile and run
-Backend (Node.js/Express)
+#### Backend (Node.js/Express)
 - cd backend
 - npm install (if not already)
 - node server.js
-- Starts the server on PORT (from .env 3000)
-Frontend (Vite React App)
+- Starts the server on PORT (from .env 3000) <br>
+#### Frontend (Vite React App)
 - cd frontend
 - npm install (if not already)
 - npm run dev
