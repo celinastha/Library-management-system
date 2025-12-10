@@ -1,6 +1,6 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+import { FaSearch } from "react-icons/fa";
+
 import "./App.css";
 
 function App() {
@@ -40,21 +40,24 @@ function App() {
             onChange={(e) => setSearch(e.target.value)}
           />
           <button>search</button>
+          <text className="text-1">Group Osmium</text>
         </form>
         {error && <p>{error}</p>}
 
-        {loading ? (
-          <p>loading...</p>
-        ) : (
-          <li className="no-bullet-point">
-            {books.map((book) => (
-              <ol key={book.ISBN}>
-                ISBN:{book.ISBN}, Title:{book.Title}, Authors:{book.Authors},
-                Status:{book.Status}
-              </ol>
-            ))}
-          </li>
-        )}
+        <div className="search-result-container">
+          {loading ? (
+            <p>loading...</p>
+          ) : (
+            <li className="no-bullet-point">
+              {books.map((book) => (
+                <ol key={book.ISBN}>
+                  ISBN:{book.ISBN}, Title:{book.Title}, Authors:{book.Authors},
+                  Status:{book.Status}
+                </ol>
+              ))}
+            </li>
+          )}
+        </div>
       </div>
     </div>
   );
