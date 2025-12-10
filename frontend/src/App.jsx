@@ -48,14 +48,42 @@ function App() {
           {loading ? (
             <p>loading...</p>
           ) : (
-            <li className="no-bullet-point">
-              {books.map((book) => (
-                <ol key={book.ISBN}>
-                  ISBN:{book.ISBN}, Title:{book.Title}, Authors:{book.Authors},
-                  Status:{book.Status}
-                </ol>
-              ))}
-            </li>
+            <table style={{ width: "100%", borderCollapse: "collapse" }}>
+              <thead>
+                <tr>
+                  <th style={{ padding: "8px" }}>
+                    ISBN
+                  </th>
+                  <th style={{ padding: "8px" }}>
+                    Title
+                  </th>
+                  <th style={{ padding: "8px" }}>
+                    Authors
+                  </th>
+                  <th style={{ padding: "8px" }}>
+                    Status
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {books.map((book) => (
+                  <tr key={book.ISBN}>
+                    <td style={{ borderRight: "2px solid #ccc", padding: "8px" }}>
+                      {book.ISBN}
+                    </td>
+                    <td style={{ borderRight: "2px solid #ccc", padding: "8px" }}>
+                      {book.Title}
+                    </td>
+                    <td style={{ borderRight: "2px solid #ccc", padding: "8px" }}>
+                      {book.Authors}
+                    </td>
+                    <td style={{ padding: "8px" }}>
+                      {book.Status}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           )}
         </div>
       </div>
