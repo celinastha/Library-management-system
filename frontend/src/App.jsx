@@ -1,6 +1,5 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+import { Link } from 'react-router-dom';
 import "./App.css";
 
 function App() {
@@ -49,8 +48,13 @@ function App() {
           <li className="no-bullet-point">
             {books.map((book) => (
               <ol key={book.ISBN}>
-                ISBN:{book.ISBN}, Title:{book.Title}, Authors:{book.Authors},
-                Status:{book.Status}
+                <Link 
+                  to={`/book/${book.ISBN}`} 
+                  state={{ data: {Title:book.Title, Authors:book.Authors, Status:book.Status} }}
+                >
+                  ISBN:{book.ISBN}, Title:{book.Title}, Authors:{book.Authors},
+                  Status:{book.Status}
+                </Link>
               </ol>
             ))}
           </li>

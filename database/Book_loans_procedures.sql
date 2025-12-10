@@ -1,8 +1,8 @@
 -- Book loans procedures
-
+DROP PROCEDURE IF EXISTS checkout_book;
 
 DELIMITER $$
-CREATE PROCEDURE checkout_book(IN p_isbn VARCHAR(20), IN p_card_id VARCHAR(20), IN p_loan_id VARCHAR(20))
+CREATE PROCEDURE checkout_book(IN p_isbn VARCHAR(20), IN p_card_id VARCHAR(20))
 BEGIN
     DECLARE active_loans INT;
     DECLARE unpaid_fines INT;
@@ -37,7 +37,7 @@ BEGIN
 
     -- Insert new loan with due date +14 days
     INSERT INTO BOOK_LOANS (Loan_id, Isbn, Card_id, Date_out, Due_date, Date_in)
-    VALUES (p_loan_id, p_isbn, p_card_id, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 14 DAY), NULL);
+    VALUES (UUID(), p_isbn, p_card_id, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 14 DAY), NULL);
 
     COMMIT;
 END$$
@@ -98,8 +98,8 @@ DELIMITER ;
 
 
 -- Example calls
-CALL checkout_book('1557866031', 'ID000994', 'LN000123');
-CALL search_loans('will'); 
-CALL checkin_books('LN000123',NULL,NULL);   -- one checkin
-CALL checkin_books('LN000123','LN000124',NULL); -- two checkin
-CALL checkin_books('LN000123','LN000124','LN000125'); -- three checkin
+-- CALL checkout_book('1557866031', 'ID000994', 'LN000123');
+-- CALL search_loans('will'); 
+-- CALL checkin_books('LN000123',NULL,NULL);   -- one checkin
+-- CALL checkin_books('LN000123','LN000124',NULL); -- two checkin
+-- CALL checkin_books('LN000123','LN000124','LN000125'); -- three checkin
