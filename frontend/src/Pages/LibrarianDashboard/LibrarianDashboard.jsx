@@ -1,11 +1,10 @@
 import React from 'react'
 import Search from '../../Components/Search/Search'
 
-const LibrarianDashboard = ({ onLogout }) => {
+const LibrarianDashboard = () => {
   return (
     <div>
       <h2>Librarian Dashboard</h2>
-      <button onClick={onLogout}>Logout</button>
       <Search/>
     </div>
   )

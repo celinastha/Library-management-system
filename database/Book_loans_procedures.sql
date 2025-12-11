@@ -1,5 +1,6 @@
 -- Book loans procedures
 DROP PROCEDURE IF EXISTS checkout_book;
+DROP PROCEDURE IF EXISTS checkin_books;
 
 DELIMITER $$
 CREATE PROCEDURE checkout_book(IN p_isbn VARCHAR(20), IN p_card_id VARCHAR(20))
@@ -67,7 +68,7 @@ DELIMITER ;
 
 
 DELIMITER $$
-CREATE PROCEDURE checkin_books(IN p_loan_id1 VARCHAR(20), IN p_loan_id2 VARCHAR(20), IN p_loan_id3 VARCHAR(20))
+CREATE PROCEDURE checkin_books(IN p_loan_id1 VARCHAR(255), IN p_loan_id2 VARCHAR(255), IN p_loan_id3 VARCHAR(255))
 BEGIN
     -- Loan 1
     IF p_loan_id1 IS NOT NULL THEN
