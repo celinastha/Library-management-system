@@ -11,6 +11,8 @@ import BorrowerDashboard from './Pages/BorrowerDashboard/BorrowerDashboard.jsx'
 import GuestDashboard from './Pages/GuestDashboard/GuestDashboard.jsx'
 import { Fines }  from './Pages/fines.jsx'
 import Auth from './Pages/Auth/Auth.jsx'
+import ProtectedRoute from './Components/protectedRoutes.jsx'
+import Unauthorized from './Pages/Unauthorized.jsx'
 
 const router = createBrowserRouter([
   {
@@ -26,24 +28,24 @@ const router = createBrowserRouter([
         element: <Auth />,
       },
       {
+        path: "/unauthorized",
+        element: <Unauthorized />,
+      },
+      {
         path: "/book/:id",
-        element: <Book />,
+        element: <ProtectedRoute role="librarian"> <Book /> </ProtectedRoute>
       },
       {
         path:"/addborrower",
-        element:<AddBorrower/>
+        element:<ProtectedRoute role="librarian"><AddBorrower/></ProtectedRoute>
       },
       {
         path:"/checkin",
-        element:<Checkin/>
+        element:<ProtectedRoute role="librarian"><Checkin/></ProtectedRoute>
       },
       {
         path:"/librarian",
-        element: <LibrarianDashboard/>
-      },
-      {
-        path:"/borrower",
-        element: <BorrowerDashboard/>
+        element: <ProtectedRoute role="librarian"><LibrarianDashboard/></ProtectedRoute>
       },
       {
         path:"/guest",
@@ -51,7 +53,7 @@ const router = createBrowserRouter([
       },
       {
         path:"/fines",
-        element: <Fines/>
+        element: <ProtectedRoute role="librarian"><Fines/></ProtectedRoute>
       }
     ]
   }
