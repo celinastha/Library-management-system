@@ -47,19 +47,19 @@ export function Book() {
       <div className="book-container">
         <div className="book-card">
           <p className="error-message">Book not found</p>
-          <button className="back-button" onClick={() => navigate("/")}>
+          <button className="back-button" onClick={() => navigate(-1)}>
             Back to Home
           </button>
         </div>
       </div>
     );
-  }
-
+    }
+    
   return (
     <div className="book-container">
       <div className="book-card">
         <div className="book-header">
-          <button className="back-button" onClick={() => navigate("/")}>
+          <button className="back-button" onClick={() => navigate(-1)}>
             ← Back
           </button>
         </div>
@@ -92,20 +92,20 @@ export function Book() {
                 <label htmlFor="borrower-id" className="form-label">
                   Borrower ID
                 </label>
-                <input
+        <input
                   id="borrower-id"
                   type="text"
                   className="form-input"
                   placeholder="Enter borrower ID"
-                  value={borrowerId}
-                  onChange={(e) => setBorrowerId(e.target.value)}
+          value={borrowerId}
+          onChange={(e) => setBorrowerId(e.target.value)}
                   required
-                />
+        />
               </div>
               <button type="submit" className="checkout-button">
                 Checkout
               </button>
-            </form>
+      </form>
           </div>
         )}
 

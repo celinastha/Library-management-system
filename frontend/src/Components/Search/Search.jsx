@@ -184,10 +184,20 @@ function Search() {
           </div>
         </div>
         {location.pathname === "/librarian" && (
-          <>
-            <button onClick={()=>navigate('/addborrower')}>Add borrower</button>
-            <button onClick={()=>navigate('/checkin')}>Checkin</button>
-          </>
+          <div className="action-buttons">
+            <button 
+              className="action-button action-button-add" 
+              onClick={()=>navigate('/addborrower')}
+            >
+              Add Borrower
+            </button>
+            <button 
+              className="action-button action-button-checkin" 
+              onClick={()=>navigate('/checkin')}
+            >
+              Checkin
+            </button>
+          </div>
         )}
         
       </div>

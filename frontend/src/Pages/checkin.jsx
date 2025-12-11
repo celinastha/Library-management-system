@@ -1,50 +1,51 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "./checkin.css";
 
 export function Checkin() {
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
   const [loans, setLoans] = useState([]);
   const [selectedLoanIds, setSelectedLoanIds] = useState([]); 
-  const [error,setError] = useState('');
-  const [message,setMessage]=useState('');
+  const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
   const findLoans = async (event) => {
     event.preventDefault();
-    setError('');
-    setMessage('');
+    setError("");
+    setMessage("");
     try {
-
       const response = await fetch(`http://localhost:3000/loans/search?q=${search}`);
       const data = await response.json();
       setLoans(data);
       setSelectedLoanIds([]); 
     } catch (err) {
       console.error(err);
+      setError("Failed to search loans. Please try again.");
     }
   };
 
   const handleSelect = (loanId) => {
     setSelectedLoanIds((prevSelected) => {
-
       if (prevSelected.includes(loanId)) {
         return prevSelected.filter((id) => id !== loanId);
       }
-
 
       if (prevSelected.length >= 3) {
         return prevSelected; 
       }
 
-
       return [...prevSelected, loanId];
     });
   };
+
   const handleCheckIn = async () => {
+    setError("");
+    setMessage("");
     try {
-      const response = await fetch('http://localhost:3000/checkin', {
-        method: 'PUT', 
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("http://localhost:3000/checkin", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ loanIds: selectedLoanIds }), 
       });
 
@@ -55,77 +56,118 @@ export function Checkin() {
         const data = await response.json();
         setLoans(data);
         setSelectedLoanIds([]); 
-        setMessage(result.message)
-        
+        setMessage(result.message);
       } else {
-        setError(result.error)
+        setError(result.error);
       }
     } catch (err) {
       console.error(err);
-      setError(err.message)
+      setError(err.message);
     }
   };
 
   return (
-    <div>
-      <div style={{ marginBottom: "20px" }}>
-        <button onClick={() => navigate('/')}>Back</button>
+    <div className="checkin-container">
+      <div className="checkin-card">
+        <div className="checkin-header">
+          <button className="back-button" onClick={() => navigate(-1)}>
+            ← Back
+          </button>
       </div>
 
-      <form onSubmit={findLoans}>
+        <h1 className="page-title">Check In Books</h1>
+        <p className="page-subtitle">Search for loans by Card ID or Borrower Name</p>
+
+        <form onSubmit={findLoans} className="search-form">
+          <div className="form-group">
+            <label htmlFor="search" className="form-label">
+              Search
+            </label>
         <input 
-          placeholder="Search by Card ID or Name" 
+              id="search"
+              type="text"
+              className="form-input"
+              placeholder="Enter Card ID or Borrower Name"
           value={search} 
           onChange={(e) => setSearch(e.target.value)} 
+              required
         />
-        <button type="submit">Search</button>
+          </div>
+          <button type="submit" className="search-button">
+            Search
+          </button>
       </form>
 
-      <ul style={{ listStyle: "none", padding: 0 }}>
+        {error && <div className="message error-message">{error}</div>}
+        {message && <div className="message success-message">{message}</div>}
+
+        {loans.length > 0 && (
+          <div className="loans-section">
+            <h2 className="section-title">
+              Found Loans ({loans.length})
+              {selectedLoanIds.length > 0 && (
+                <span className="selected-count">
+                  {" "}
+                  - {selectedLoanIds.length} selected
+                </span>
+              )}
+            </h2>
+            <p className="selection-hint">
+              Select up to 3 loans to check in at once
+            </p>
+            <ul className="loans-list">
         {loans.map((loan) => {
           const isSelected = selectedLoanIds.includes(loan.Loan_id);
           
           return (
             <li 
               key={loan.Loan_id}
+                    className={`loan-item ${isSelected ? "loan-item-selected" : ""}`}
               onClick={() => handleSelect(loan.Loan_id)}
-              style={{
-                border: "1px solid #ccc",
-                margin: "10px 0",
-                padding: "10px",
-                cursor: "pointer",
-                backgroundColor: isSelected ? "#e6f7ff" : "white", // Visual feedback
-                display: "flex",
-                alignItems: "center",
-                gap: "10px"
-              }}
             >
               <input 
                 type="checkbox" 
                 checked={isSelected}
                 readOnly
+                      className="loan-checkbox"
               />
-              
-              <div>
-                <strong>ID:</strong> {loan.Loan_id} | 
-                <strong> ISBN:</strong> {loan.Isbn} | 
-                <strong> Due:</strong> {loan.Due_date.substring(0, 10)}
+                    <div className="loan-details">
+                      <div className="loan-row">
+                        <span className="loan-label">Loan ID:</span>
+                        <span className="loan-value">{loan.Loan_id}</span>
+                      </div>
+                      <div className="loan-row">
+                        <span className="loan-label">ISBN:</span>
+                        <span className="loan-value">{loan.Isbn}</span>
+                      </div>
+                      <div className="loan-row">
+                        <span className="loan-label">Due Date:</span>
+                        <span className="loan-value">
+                          {loan.Due_date.substring(0, 10)}
+                        </span>
+                      </div>
               </div>
             </li>
           );
         })}
       </ul>
+          </div>
+        )}
 
       {selectedLoanIds.length > 0 && (
-        <button 
-          style={{ marginTop: "20px", padding: "10px 20px", background: "green", color: "white" }}
-          onClick={() => handleCheckIn()}
-        >
+          <div className="checkin-actions">
+            <button className="checkin-button" onClick={handleCheckIn}>
           Check In Selected ({selectedLoanIds.length})
         </button>
-      )}
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      {message && <p style={{ color: "green" }}>{message}</p>}
+          </div>
+        )}
+
+        {loans.length === 0 && search && (
+          <div className="no-results">
+            <p>No loans found matching your search.</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
