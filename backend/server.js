@@ -120,6 +120,35 @@ app.put('/checkin', async (req, res) => {
         });
     }
 });
+app.get('/borrower/loans', (req, res) => {
+    
+    let { ssn, card_id } = req.body;
+    console.log('hi')
+
+    const ssnParam = ssn ? ssn : null;
+    const cardParam = card_id ? card_id : null;
+
+    if (!ssnParam && !cardParam) {
+        return res.status(400).json({ 
+            error: "Please provide either a 'ssn' or a 'card_id'." 
+        });
+    }
+
+    const sql = 'CALL GetBorrowerLoans(?, ?)';
+
+    db.query(sql, [ssnParam, cardParam], (err, results) => {
+        if (err) {
+            console.error('Database error:', err);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+        res.json({
+            count: results[0].length,
+            loans: results[0]
+        });
+    });
+});
+
+// Start Server
 
 app.listen(PORT, () => {
   console.log(`🚀 Server running at http://localhost:${PORT}`);
