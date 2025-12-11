@@ -9,6 +9,7 @@ import { Checkin } from './pages/checkin.jsx'
 import LibrarianDashboard from './Pages/LibrarianDashboard/LibrarianDashboard.jsx'
 import BorrowerDashboard from './Pages/BorrowerDashboard/BorrowerDashboard.jsx'
 import GuestDashboard from './Pages/GuestDashboard/GuestDashboard.jsx'
+import { Fines }  from './Pages/fines.jsx'
 import Auth from './Pages/Auth/Auth.jsx'
 
 const router = createBrowserRouter([
@@ -47,6 +48,10 @@ const router = createBrowserRouter([
       {
         path:"/guest",
         element: <GuestDashboard/>
+      },
+      {
+        path:"/fines",
+        element: <Fines/>
       }
     ]
   }

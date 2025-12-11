@@ -197,6 +197,12 @@ function Search() {
             >
               Checkin
             </button>
+            <button 
+              className="action-button action-button-fines" 
+              onClick={()=>navigate('/fines')}
+            >
+              Fines
+            </button>
           </div>
         )}
         
