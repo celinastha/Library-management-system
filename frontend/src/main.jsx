@@ -6,6 +6,8 @@ import App from './App.jsx'
 import { Book } from './pages/Book.jsx'
 import { AddBorrower } from './pages/AddBorrower.jsx'
 import { Checkin } from './pages/checkin.jsx'
+import LibrarianDashboard from './Pages/LibrarianDashboard/LibrarianDashboard.jsx'
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -22,6 +24,10 @@ const router = createBrowserRouter([
   {
     path:"/checkin",
     element:<Checkin/>
+  },
+  {
+    path:"/librarian",
+    element: <LibrarianDashboard/>
   }
 ]);
 createRoot(document.getElementById('root')).render(

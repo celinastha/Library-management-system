@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import "./Search.css";
 
 function Search() {
@@ -9,6 +9,8 @@ function Search() {
   const [error, setError] = useState("");
   const [sortColumn, setSortColumn] = useState(null);
   const [sortDirection, setSortDirection] = useState("asc");
+  const navigate=useNavigate();
+  const location = useLocation();
 
   const searchBooks = async (event) => {
     event.preventDefault();
@@ -181,6 +183,8 @@ function Search() {
             )}
           </div>
         </div>
+        <button onClick={()=>navigate('/addborrower')}>Add borrower</button>
+        <button onClick={()=>navigate('/checkin')}>Checkin</button>
       </div>
     </>
   );
