@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom";
+import "./fines.css";
 
 export function Fines(){
   const [cardId,setCardId]=useState('');
@@ -90,27 +91,74 @@ export function Fines(){
     }
   };
   return(
-    <div>
-      <form onSubmit={findFines}>
-        <input placeholder="cardId" value={cardId} onChange={(e)=>setCardId(e.target.value)}/>
-        <button>get fines</button>
-      </form>
-      <li>
-        {fines.map((fine,index)=><ul key={index}>
-          Card_id: {fine.Card_id}, Total: {Number(fine.Total_Fines).toFixed(2)}
-        </ul>)}
-      </li>
-      {
-        (fines.length>0)&&<div>
-          <button onClick={payFines}>pay</button>
-          <button onClick={refreshFines}>Refresh</button>
+    <div className="fines-container">
+      <div className="fines-card">
+        <div className="fines-header">
+          <button className="back-button" onClick={() => navigate(-1)}>
+            ← Back
+          </button>
+        </div>
 
-        </div>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      {message && <p style={{ color: "green" }}>{message}</p>}
-      <button onClick={() => navigate('/')}>Back</button>
-      
+        <h1 className="page-title">Fines Management</h1>
+        <p className="page-subtitle">Search for fines by Card ID</p>
 
+        <form onSubmit={findFines} className="search-form">
+          <div className="form-group">
+            <label htmlFor="cardId" className="form-label">
+              Card ID
+            </label>
+            <input 
+              id="cardId"
+              type="text"
+              className="form-input"
+              placeholder="Enter Card ID"
+              value={cardId} 
+              onChange={(e)=>setCardId(e.target.value)}
+              required
+            />
+          </div>
+          <button type="submit" className="search-button">
+            Get Fines
+          </button>
+        </form>
+
+        {error && <div className="message error-message">{error}</div>}
+        {message && <div className="message success-message">{message}</div>}
+
+        {fines.length > 0 && (
+          <>
+            <ul className="fines-list">
+              {fines.map((fine,index)=>(
+                <li key={index} className="fine-item">
+                  <div className="fine-details">
+                    <span className="fine-label">Card ID:</span>
+                    <span className="fine-value">{fine.Card_id}</span>
+                  </div>
+                  <div className="fine-details">
+                    <span className="fine-label">Total:</span>
+                    <span className="fine-value">${Number(fine.Total_Fines).toFixed(2)}</span>
+                  </div>
+                </li>
+              ))}
+            </ul>
+
+            <div className="fines-actions">
+              <button className="action-button" onClick={payFines}>
+                Pay Fines
+              </button>
+              <button className="action-button action-button-refresh" onClick={refreshFines}>
+                Refresh
+              </button>
+            </div>
+          </>
+        )}
+
+        {fines.length === 0 && cardId && (
+          <div className="no-results">
+            <p>No fines found for this card ID.</p>
+          </div>
+        )}
+      </div>
     </div>
   )
 }
