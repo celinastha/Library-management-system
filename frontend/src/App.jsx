@@ -1,8 +1,16 @@
+import React from 'react'
 import { useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import "./App.css";
+import Search from "./Components/Search/Search";
+import AuthPage from "./Pages/Auth/Auth";
+import LibrarianDashboard from "./Pages/LibrarianDashboard/LibrarianDashboard";
+import BorrowerDashboard from "./Pages/BorrowerDashboard/BorrowerDashboard";
+import GuestDashboard from "./Pages/GuestDashboard/GuestDashboard";
+import Navbar from "./Components/Navbar/Navbar"
 
 function App() {
+
   const [books, setBooks] = useState([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
@@ -10,81 +18,57 @@ function App() {
   const [sortColumn, setSortColumn] = useState(null);
   const [sortDirection, setSortDirection] = useState("asc");
   const navigate=useNavigate();
+  const [role, setRole] = useState(null);
+  const [borrowerId, setBorrowerId] = useState("");
+  const [token, setToken] = useState(null);
 
-  const searchBooks = async (event) => {
-    event.preventDefault();
-    try {
-      setError("");
-      setLoading(true);
-      const response = await fetch(`http://localhost:3000/search?q=${search}`);
 
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
+  function logout() {
+    setRole(null);
+    setToken(null);
+    setBorrowerId("");
+  }
 
-      const data = await response.json();
-      setBooks(data);
-    } catch (err) {
-      setError("Failed to fetch books. Is the backend running?");
-    } finally {
-      setLoading(false);
-    }
-  };
 
-  const handleSort = (column) => {
-    if (sortColumn === column) {
-      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
-    } else {
-      setSortColumn(column);
-      setSortDirection("asc");
-    }
-  };
-  const getSortedBooks = () => {
-    if (!sortColumn) return books;
-    const sorted = [...books].sort((a, b) => {
-      let aValue = a[sortColumn];
-      let bValue = b[sortColumn];
-      if (aValue == null) aValue = "";
-      if (bValue == null) bValue = "";
-      if (!isNaN(aValue) && !isNaN(bValue)) {
-        aValue = Number(aValue);
-        bValue = Number(bValue);
-      } else {
-        aValue = aValue.toString().toLowerCase();
-        bValue = bValue.toString().toLowerCase();
-      }
-      if (aValue < bValue) return sortDirection === "asc" ? -1 : 1;
-      if (aValue > bValue) return sortDirection === "asc" ? 1 : -1;
-      return 0;
-    });
-    return sorted;
-  };
+  if (!role) {
+    return (
+      <AuthPage
+        onSelectRole={setRole}
+        setToken={setToken}
+        setBorrowerId={setBorrowerId}
+      />
+    );
+  }
 
-  const sortedBooks = getSortedBooks();
+  if (role === "librarian") {
+    return (
+      <>
+        <Navbar onLogout={logout}/>
+        <LibrarianDashboard token={token}  />
+      </>
+    );
+  }
 
-  const sortArrow = (column) => {
-    if (sortColumn !== column) return "";
-    return sortDirection === "asc" ? " ▲" : " ▼";
-  };
+  if (role === "borrower") {
+    return(
+      <>
+        <Navbar onLogout={logout}/>
+        <BorrowerDashboard borrowerId={borrowerId} />
+      </>
+    );
+  }
 
-  return (
-    <>
-      <nav className="navbar">
-        <span className="navbar-title">Library Management System</span>
-      </nav>
-      <div className="homebox-1">
-        <div className="homebox-2">
-          <form onSubmit={searchBooks}>
-            <input
-              className="search-input-field"
-              placeholder="search ISBN, Tile, Authors, Status..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-            <button>search</button>
-            <text className="text-1">Group Osmium</text>
-          </form>
-          {error && <p>{error}</p>}
+  if (role === "guest") {
+    return(
+      <>
+        <Navbar onLogout={logout}/>
+        <GuestDashboard />
+      </>
+    );
+  }
+
+  return null;
+
 
           <div className="search-result-container">
             {loading ? (

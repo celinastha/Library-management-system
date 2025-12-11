@@ -1,0 +1,19 @@
+.navbar {
+  width: 100vw;
+  height: 56px;
+  background: #1c5494;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  padding-left: 2em;
+  font-size: 1.5em;
+  font-weight: bold;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
+
+.navbar-title {
+  letter-spacing: 1px;
+}
