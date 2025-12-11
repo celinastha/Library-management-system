@@ -43,20 +43,30 @@ export function Book(){
     
   }
   return (
-    <div>
-      {book&&id?<div>
-        <h1>{book.Title}</h1>
-        <p>ID: {id}</p>
-        <p>By: {book.Authors}</p>
-        <p>Status: {status}</p>
-      </div>:<p>book doesn't exist</p>}
-      <form onSubmit={checkout}>
-        <input placeholder="Borrower ID" value={borrowerId} onChange={(e)=>setBorrowerId(e.target.value)}/>
-        <button>checkout</button>
+    <div className="homebox-1" style={{ maxWidth: 500, margin: "0em ", padding: "2em" }}>
+      {book && id ? (
+        <div className="homebox-2" style={{ marginBottom: "2em" }}>
+          <h1 style={{ marginBottom: "0.5em" }}>{book.Title}</h1>
+          <p><strong>ID:</strong> {id}</p>
+          <p><strong>By:</strong> {book.Authors}</p>
+          <p><strong>Status:</strong> {status}</p>
+        </div>
+      ) : (
+        <p>book doesn't exist</p>
+      )}
+      <form onSubmit={checkout} style={{ marginBottom: "1em" }}>
+        <input
+          className="search-input-field"
+          placeholder="Borrower ID"
+          value={borrowerId}
+          onChange={(e) => setBorrowerId(e.target.value)}
+          style={{ marginRight: "1em" }}
+        />
+        <button className="search-button">checkout</button>
       </form>
-      {error&&<p>{error}</p>}
-      {message&&<p>{message}</p>}
-      <button onClick={()=>navigate('/')}>back</button>
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      {message && <p style={{ color: "green" }}>{message}</p>}
+      <button className="search-button" style={{ marginTop: "1em" }} onClick={() => navigate('/')}>back</button>
     </div>
   )
 }
