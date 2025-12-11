@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import "./App.css";
 
 function App() {
@@ -9,6 +9,7 @@ function App() {
   const [error, setError] = useState("");
   const [sortColumn, setSortColumn] = useState(null);
   const [sortDirection, setSortDirection] = useState("asc");
+  const navigate=useNavigate();
 
   const searchBooks = async (event) => {
     event.preventDefault();
@@ -158,6 +159,7 @@ function App() {
             )}
           </div>
         </div>
+        <button onClick={()=>navigate('/addborrower')}>Add borrower</button>
       </div>
     </>
   );

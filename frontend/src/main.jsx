@@ -4,6 +4,7 @@ import {createBrowserRouter, RouterProvider} from 'react-router-dom'
 import './index.css'
 import App from './App.jsx'
 import { Book } from './pages/Book.jsx'
+import { AddBorrower } from './pages/AddBorrower.jsx'
 const router = createBrowserRouter([
   {
     path: "/",
@@ -13,6 +14,10 @@ const router = createBrowserRouter([
     path: "/book/:id",
     element: <Book />,
   },
+  {
+    path:"/addborrower",
+    element:<AddBorrower/>
+  }
 ]);
 createRoot(document.getElementById('root')).render(
   <StrictMode>

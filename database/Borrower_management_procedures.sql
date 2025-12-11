@@ -1,32 +1,40 @@
 -- Borrower management procedures
-
+DROP PROCEDURE IF EXISTS add_borrower;
 DELIMITER $$
 CREATE PROCEDURE add_borrower(IN p_ssn VARCHAR(15), IN p_name VARCHAR(255), IN p_address VARCHAR(255), IN p_phone VARCHAR(25))
 BEGIN
     DECLARE next_id VARCHAR(20);
-	DECLARE max_num INT;
+    DECLARE max_num INT;
+    DECLARE lock_result INT;
 
-    START TRANSACTION;
 
-    -- SSN must be unique check
     IF EXISTS (SELECT 1 FROM BORROWER WHERE Ssn = p_ssn) THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Borrower with this SSN already exists.';
     END IF;
-	
-    
-    -- Highest existing Card_id
+
+    START TRANSACTION;
+
+    SELECT GET_LOCK('borrower_id_gen', 10) INTO lock_result;
+
+
+    IF lock_result = 0 THEN
+        ROLLBACK;
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'System busy. Please try again.';
+    END IF;
+
+
     SELECT COALESCE(MAX(CAST(SUBSTRING(Card_id, 3) AS UNSIGNED)), 0)
     INTO max_num
     FROM BORROWER;
 
-
-    -- Generate next Card_id
     SET next_id = CONCAT('ID', LPAD(max_num + 1, 6, '0'));
 
-
-    -- Insert borrower
+ 
     INSERT INTO BORROWER (Card_id, Ssn, Bname, Address, Phone)
     VALUES (next_id, p_ssn, p_name, p_address, p_phone);
+
+
+    SELECT RELEASE_LOCK('borrower_id_gen');
 
     COMMIT;
 END$$
