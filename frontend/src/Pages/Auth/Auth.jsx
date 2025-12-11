@@ -10,9 +10,9 @@ const Auth = () => {
     const [input, setInput] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+    const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
   const handleLibrarianLogin = async (e) => {
     e.preventDefault();
@@ -28,17 +28,6 @@ const Auth = () => {
     } finally {
       setLoading(false);
         }
-  };
-
-  const handleBorrowerLogin = (e) => {
-    e.preventDefault();
-    setError("");
-    if (!input.trim()) {
-      setError("Please enter your SSN or Card ID");
-      return;
-    }
-    localStorage.setItem("borrowerId", input);
-    navigate("/borrower");
   };
 
   const handleGuestAccess = () => {
@@ -62,15 +51,7 @@ const Auth = () => {
                   <p>Access with email and password</p>
                 </div>
               </button>
-              <button
-                className="role-button"
-                onClick={() => setMode("borrower")}
-              >
-                <div className="role-content">
-                  <h3>Borrower</h3>
-                  <p>Login with SSN or Card ID</p>
-                </div>
-              </button>
+
               <button
                 className="role-button role-button-guest"
                 onClick={handleGuestAccess}
@@ -146,33 +127,6 @@ const Auth = () => {
             </form>
         )}
 
-        {mode === "borrower" && (
-              <form onSubmit={handleBorrowerLogin} className="login-form">
-                <h2 className="login-title">Borrower Login</h2>
-                <p className="login-subtitle">Enter your SSN or Card ID to continue</p>
-
-                <div className="form-group">
-                  <label htmlFor="borrower-id" className="form-label">
-                    SSN or Card ID
-                  </label>
-                <input
-                    id="borrower-id"
-                    type="text"
-                    className="form-input"
-                    placeholder="Enter your SSN or Card ID"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                    required
-                />
-                </div>
-
-                {error && <div className="error-message">{error}</div>}
-
-                <button type="submit" className="login-button">
-                  Login
-                </button>
-            </form>
-            )}
           </div>
         )}
       </div>
