@@ -1,24 +1,26 @@
 import { useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+import "./Book.css";
 
-export function Book(){
+export function Book() {
   const location = useLocation();
-  const navigate= useNavigate();
+  const navigate = useNavigate();
   const book = location.state?.data;
   const { id } = useParams();
-  const [status,setStatus]=useState(book.Status);
-  const [borrowerId, setBorrowerId]= useState('');
-  const [error,setError] = useState('');
-  const [message,setMessage]=useState('');
-  const checkout= async(event)=>{
+  const [status, setStatus] = useState(book?.Status);
+  const [borrowerId, setBorrowerId] = useState("");
+  const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
+
+  const checkout = async (event) => {
     event.preventDefault();
-    setError('');
-    setMessage('');
+    setError("");
+    setMessage("");
     try {
-      const response = await fetch('http://localhost:3000/checkout', {
-        method: 'POST',
+      const response = await fetch("http://localhost:3000/checkout", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           isbn: id,
@@ -30,43 +32,92 @@ export function Book(){
 
       if (!response.ok) {
         setError(data.error);
-      }else{
-        setMessage(data.message)
-        setStatus('OUT')
+      } else {
+        setMessage(data.message);
+        setStatus("OUT");
+        setBorrowerId("");
       }
-
-
     } catch (error) {
       setError(error.message);
-
     }
-    
-  }
-  return (
-    <div className="homebox-1" style={{ maxWidth: 500, margin: "0em ", padding: "2em" }}>
-      {book && id ? (
-        <div className="homebox-2" style={{ marginBottom: "2em" }}>
-          <h1 style={{ marginBottom: "0.5em" }}>{book.Title}</h1>
-          <p><strong>ID:</strong> {id}</p>
-          <p><strong>By:</strong> {book.Authors}</p>
-          <p><strong>Status:</strong> {status}</p>
+  };
+
+  if (!book || !id) {
+    return (
+      <div className="book-container">
+        <div className="book-card">
+          <p className="error-message">Book not found</p>
+          <button className="back-button" onClick={() => navigate("/")}>
+            Back to Home
+          </button>
         </div>
-      ) : (
-        <p>book doesn't exist</p>
-      )}
-      <form onSubmit={checkout} style={{ marginBottom: "1em" }}>
-        <input
-          className="search-input-field"
-          placeholder="Borrower ID"
-          value={borrowerId}
-          onChange={(e) => setBorrowerId(e.target.value)}
-          style={{ marginRight: "1em" }}
-        />
-        <button className="search-button">checkout</button>
-      </form>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      {message && <p style={{ color: "green" }}>{message}</p>}
-      <button className="search-button" style={{ marginTop: "1em" }} onClick={() => navigate('/')}>back</button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="book-container">
+      <div className="book-card">
+        <div className="book-header">
+          <button className="back-button" onClick={() => navigate("/")}>
+            ← Back
+          </button>
+        </div>
+
+        <div className="book-info">
+          <h1 className="book-title">{book.Title}</h1>
+          <div className="book-details">
+            <div className="detail-row">
+              <span className="detail-label">ISBN:</span>
+              <span className="detail-value">{id}</span>
+            </div>
+            <div className="detail-row">
+              <span className="detail-label">Author(s):</span>
+              <span className="detail-value">{book.Authors}</span>
+            </div>
+            <div className="detail-row">
+              <span className="detail-label">Status:</span>
+              <span className={`status-badge ${status === "OUT" ? "status-out" : "status-available"}`}>
+                {status}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {status !== "OUT" && (
+          <div className="checkout-section">
+            <h2 className="section-title">Checkout Book</h2>
+            <form onSubmit={checkout} className="checkout-form">
+              <div className="form-group">
+                <label htmlFor="borrower-id" className="form-label">
+                  Borrower ID
+                </label>
+                <input
+                  id="borrower-id"
+                  type="text"
+                  className="form-input"
+                  placeholder="Enter borrower ID"
+                  value={borrowerId}
+                  onChange={(e) => setBorrowerId(e.target.value)}
+                  required
+                />
+              </div>
+              <button type="submit" className="checkout-button">
+                Checkout
+              </button>
+            </form>
+          </div>
+        )}
+
+        {status === "OUT" && (
+          <div className="status-message">
+            <p>This book is currently checked out.</p>
+          </div>
+        )}
+
+        {error && <div className="message error-message">{error}</div>}
+        {message && <div className="message success-message">{message}</div>}
+      </div>
     </div>
-  )
+  );
 }

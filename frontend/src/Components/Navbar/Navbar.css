@@ -1,10 +1,11 @@
 .navbar {
-  width: 100vw;
+  width: 100%;
   height: 56px;
   background: #1c5494;
   color: #fff;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding-left: 2em;
   font-size: 1.5em;
   font-weight: bold;
@@ -12,8 +13,15 @@
   top: 0;
   left: 0;
   z-index: 10;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .navbar-title {
   letter-spacing: 1px;
+}
+
+.navbar button{
+  margin-right: 100px;
+  padding: 6px 20px;
+  font-size: 0.8em;
 }
