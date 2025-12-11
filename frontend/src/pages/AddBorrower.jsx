@@ -2,6 +2,7 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom";
 
 export function AddBorrower(){
+  console.log('borrow')
   const [borrowerInfo,setBorrowerInfo]=useState({ssn:'',name:'',address:'',phone:''})
   const [error,setError]=useState('');
   const [message,setMessage]=useState('');
