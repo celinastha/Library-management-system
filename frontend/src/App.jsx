@@ -212,6 +212,7 @@ function App() {
           </div>
         </div>
         <button onClick={()=>navigate('/addborrower')}>Add borrower</button>
+        <button onClick={()=>navigate('/checkin')}>Checkin</button>
       </div>
     </>
   );

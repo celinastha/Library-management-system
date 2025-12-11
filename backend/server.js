@@ -68,6 +68,58 @@ app.post('/checkout', async (req, res) => {
   }
 })
 
+app.get('/loans/search', async (req, res) => {
+    try {
+
+        const searchTerm = req.query.q || '';
+        const [results] = await db.query('CALL search_loans(?)', [searchTerm]);
+        return res.json(results[0]);
+
+    } catch (error) {
+        console.error('Database Error:', error);
+        return res.status(500).json({ 
+            error: 'Internal Server Error', 
+            details: error.message 
+        });
+    }
+});
+
+
+app.put('/checkin', async (req, res) => {
+    const { loanIds } = req.body;
+    console.log(loanIds)
+
+    if (!Array.isArray(loanIds)) {
+        return res.status(400).json({ error: 'not an array' });
+    }
+
+    if (loanIds.length > 3) {
+        return res.status(400).json({ error: 'only 3 inputs' });
+    }
+
+    try {
+        const args = [
+            loanIds[0] || null,
+            loanIds[1] || null,
+            loanIds[2] || null
+        ];
+        await db.query(
+            'CALL checkin_books(?, ?, ?)', 
+            args
+        );
+
+        return res.json({ 
+            message: 'Check-in processed successfully.',
+            checkedInCount: loanIds.length 
+        });
+
+    } catch (error) {
+        return res.status(500).json({ 
+            error: error.message,
+            details: error.message 
+        });
+    }
+});
 
 app.listen(PORT, () => {
   console.log(`🚀 Server running at http://localhost:${PORT}`);
