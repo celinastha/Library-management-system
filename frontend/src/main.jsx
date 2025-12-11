@@ -6,6 +6,7 @@ import App from './App.jsx'
 import { Book } from './pages/Book.jsx'
 import { AddBorrower } from './pages/AddBorrower.jsx'
 import { Checkin } from './pages/checkin.jsx'
+import { Fines } from './pages/fines.jsx'
 const router = createBrowserRouter([
   {
     path: "/",
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
   {
     path:"/checkin",
     element:<Checkin/>
+  },
+  {
+    path:"/fines",
+    element:<Fines/>
   }
 ]);
 createRoot(document.getElementById('root')).render(
